@@ -1,0 +1,33 @@
+blueprint:
+  name: Hue Dimmer Switch Licht Auto AN
+  description: "This blueprint triggers when the specified button on the Hue Dimmer Switch is pressed and turns on the specified input boolean."
+  domain: automation
+  input:
+    hue_dimmer_switch:
+      name: Hue Dimmer Switch
+      description: "The Hue Dimmer Switch to trigger this automation."
+      selector:
+        device:
+          integration: hue
+    input_boolean:
+      name: Input Boolean to Turn On
+      description: "The input boolean to turn on when the Hue Dimmer Switch is pressed."
+      selector:
+        entity:
+          domain: input_boolean
+
+trigger:
+  - platform: device
+    device_id: !input hue_dimmer_switch
+    domain: hue
+    type: repeat
+    subtype: 4
+
+condition: []
+
+action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: !input input_boolean
+
+mode: single
